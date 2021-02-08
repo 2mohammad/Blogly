@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}All Pets!{% endblock %}
+{% block content %}
+<div class="container">
+<main role="main" class="inner cover">
+<h1>All Users</h1>
+    <ul>
+        {% for user in user_list %}
+        <li><a href="/users/{{user.id}}">{{user.first_name}}</a></li>
+        {%endfor%}
+    </ul>
+    <div class="float-left">
+        <div class="container">
+        <form action="/users/new">
+          <button type="submit" class="btn btn-secondary">Add User</button>
+        </form>
+        </div>
+      </div>
+</div>     
+{% endblock %}
