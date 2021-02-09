@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Blog
+from models import db, connect_db, Blog, Posts
 
 app = Flask(__name__)
 
@@ -38,7 +38,8 @@ def users_list():
 @app.route('/users/<int:user_id>')
 def show_user(user_id):
     user = Blog.query.get_or_404(user_id)
-    return render_template('details.html', user=user)
+    posts = Posts.query.filter(Posts.user_id == user_id)
+    return render_template('details.html', user=user, posts=posts)
 
 @app.route('/users/<int:user_id>/delete')
 def remove_user(user_id):
@@ -64,3 +65,46 @@ def edit_user_form(user_id):
     db.session.commit()
     return redirect('/users')
 
+@app.route('/users/<int:user_id>/posts/new')
+def add_posts(user_id):
+    user = Blog.query.get_or_404(user_id)
+    return render_template('make_post.html', user=user)
+
+@app.route('/users/<int:user_id>/posts/new', methods=["POST"])
+def add_posts_redirect(user_id):
+    user_id = user_id
+    title = request.form["inputTitle"]
+    content = request.form["inputContent"]
+    new_post = Posts(title=title, content=content, user_id=user_id)
+    db.session.add(new_post)
+    db.session.commit()
+    return redirect(f'/users/{user_id}')
+
+@app.route('/posts/<int:post_id>')
+def view_post(post_id):
+    post = Posts.query.get_or_404(post_id)
+    user = Posts.get_post_maker(post_id)
+    return render_template('post.html', post=post, user=user)
+
+@app.route('/posts/<int:post_id>/delete')
+def delete_post(post_id):
+    post = Posts.query.get_or_404(post_id)
+    user = Posts.get_post_maker(post_id)
+    userID = user['id']
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(f'/users/{userID}')
+
+@app.route('/posts/<int:post_id>/edit')
+def edit_post_view(post_id):
+    post = Posts.query.get_or_404(post_id)
+    user = Posts.get_post_maker(post_id)
+    return render_template('edit_post.html', post=post, user=user)
+
+@app.route('/posts/<int:post_id>/edit', methods=["POST"])
+def edit_post_submit(post_id):
+    post = Posts.query.get_or_404(post_id)
+    post.title = request.form["inputTitle"]
+    post.content = request.form["inputContent"]
+    db.session.commit()
+    return redirect(f'/posts/{post.id}')

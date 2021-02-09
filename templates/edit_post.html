@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    
+    <form action="/posts/{{post.id}}/edit" method="POST">
+        <legend><h1>Edit Post</h1></legend>
+        
+        <div class="row mb-6">
+          <label for="inputTitleLabel" class="col-sm-2 col-form-label">Title</label>
+          <div class="col-sm-10 ml-3">
+            <input value="{{post.title}}" type="text" class="form-control" id="inputTitle" name="inputTitle">
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label for="inputContentLabel" class="col-sm-2 col-form-label">Content</label>
+          <div class="col-sm-10 ml-3">
+            <textarea class="form-control" name="inputContent" id="inputContent" style="height: 100px">{{post.content}}</textarea>
+          </div>
+        </div>
+        <div class="float-right">
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Edit</button>
+            </div>
+        </div>
+        <div class="float-right">
+            <div class="mt-3 mr-2">
+                <a href="/posts/{{post.id}}" class="btn btn-info" role="button">Back</a>
+            </div>
+        </div>
+      </form>
+</div>
+{% endblock %}
