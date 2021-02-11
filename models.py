@@ -49,6 +49,7 @@ class Posts(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey('roster.id'))
     userID = db.relationship('Blog')
+    post_and_tags = db.relationship('PostTag', backref='posts')
 
 
     def get_post_maker(self):
@@ -60,8 +61,20 @@ class Posts(db.Model):
             "id": post.userID.id
         }
         return (user)
+#Tag Class
+class Tag(db.Model):
 
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False, unique=True)
+    post = db.relationship('Posts', secondary='post_tags', backref='tags')    
 
+# PostTag Class
+class PostTag(db.Model):
+
+    __tablename__ = "post_tags"
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tags.id"), nullable=False, primary_key=True)
 
 
 

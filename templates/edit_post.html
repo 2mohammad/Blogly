@@ -18,6 +18,28 @@
             <textarea class="form-control" name="inputContent" id="inputContent" style="height: 100px">{{post.content}}</textarea>
           </div>
         </div>
+        {% for tag in tags %}
+            {% for post_tag in post_tags %}
+                {% if post_tag.id == tag %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{post_tag.id}}" id="tag_names" name="tag_names" checked>
+                        <label class="form-check-label" for="flexCheckChecked">{{post_tag.name}}</label>
+                    </div>
+
+                {% endif %}
+            {%endfor%}
+        {%endfor%}
+        {% for xtag in xtags %}
+            {% for tags in all_tags %}
+                {% if tags.id == xtag %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{tags.id}}" id="tag_names" name="tag_names">
+                        <label class="form-check-label" for="flexCheckDefault">{{tags.name}}</label>
+                    </div>
+
+                {% endif %}
+            {%endfor%}
+        {%endfor%}        
         <div class="float-right">
             <div class="mt-3">
                 <button type="submit" class="btn btn-success">Edit</button>

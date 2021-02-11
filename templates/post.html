@@ -5,6 +5,11 @@
     <h1>{{post.title}}</h1>
     <p>{{post.content}}</p>
     <p><i>by {{user.name}}</i></p>
+    <p>
+    {% for tag in tags %}
+    <a class="btn-group btn-group-sm btn-primary">{{tag.name}}</a>
+    {%endfor%}
+    </p>
     <a href="/users/{{user.id}}" class="btn btn-outline-primary" role="button">Cancel</a>
     <a href="/posts/{{post.id}}/edit" class="btn btn-primary" role="button">Edit</a>
     <a href="/posts/{{post.id}}/delete" class="btn btn-danger" role="button">Delete</a>

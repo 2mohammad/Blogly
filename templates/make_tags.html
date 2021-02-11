@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <form action="/tags" method="POST">
+        <legend><h1>Create a tag</h1></legend>
+        
+        <div class="row mb-6">
+          <label for="inputTagNameLabel" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10 ml-3">
+            <input type="text" class="form-control" id="inputTagName" name="inputTagName">
+          </div>
+        </div>
+        <div class="float-right">
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">Add</button>
+            </div>
+        </div>
+        <div class="float-right">
+            <div class="mt-3 mr-2">
+                <a href="/tags" class="btn btn-outline-info" role="button">Cancel</a>
+            </div>
+        </div>
+      </form>
+</div>
+
+{% endblock %}
